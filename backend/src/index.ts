@@ -41,7 +41,7 @@ app.use('/api/events', eventsRouter);
 app.use(errorHandler);
 
 // ─── Start ────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
+app.listen(Number(PORT), '0.0.0.0', () => {
   logger.info(`Signal Watcher API running`, { port: PORT, env: process.env.NODE_ENV || 'development' });
 });
 
