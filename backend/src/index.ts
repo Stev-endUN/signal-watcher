@@ -14,10 +14,7 @@ const PORT = process.env.PORT || 3001;
 
 // ─── Security & Parsing ───────────────────────────────────────────────────────
 app.use(helmet());
-app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'],
-  credentials: true,
-}));
+app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 
 // ─── Observability ────────────────────────────────────────────────────────────
