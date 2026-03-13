@@ -8,4 +8,5 @@ RUN npx prisma generate
 RUN npm run build
 EXPOSE 3001
 ENV NODE_ENV=production
+RUN ls -la dist/
 CMD ["node", "dist/index.js"]
