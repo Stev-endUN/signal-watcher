@@ -20,7 +20,20 @@ app.use(express.json({ limit: '1mb' }));
 // ─── Observability ────────────────────────────────────────────────────────────
 app.use(correlationMiddleware);
 app.use(requestLogger);
-
+// ─── Root Endpoint ───────────────────────────────────────────────────────────
+app.get('/', (_req, res) => {
+  res.json({
+    name: 'Signal Watcher API',
+    version: '1.0.0',
+    status: 'running',
+    docs: {
+      health: '/health',
+      metrics: '/metrics',
+      watchlists: '/api/watchlists',
+      events: '/api/events',
+    },
+  });
+});
 // ─── Health & Metrics ─────────────────────────────────────────────────────────
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
