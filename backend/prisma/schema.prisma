@@ -1,0 +1,38 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Watchlist {
+  id        String   @id @default(uuid())
+  name      String
+  terms     String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  events    Event[]
+}
+
+model Event {
+  id            String     @id @default(uuid())
+  watchlistId   String
+  watchlist     Watchlist  @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
+  rawData       Json
+  summary       String?
+  severity      Severity   @default(LOW)
+  nextAction    String?
+  correlationId String
+  processedAt   DateTime?
+  createdAt     DateTime   @default(now())
+}
+
+enum Severity {
+  LOW
+  MED
+  HIGH
+  CRITICAL
+}
