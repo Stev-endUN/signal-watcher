@@ -118,6 +118,10 @@ OPENAI_API_KEY=sk-...
                             │  └─ Cache → Redis / Memory     │
                             └───────────────────────────────┘
 ```
+## Live Demo
+
+- **Frontend**: https://signal-watcher-nine.vercel.app
+- **Backend**: https://signal-watcher-production.up.railway.app
 
 ## Docs
 
