@@ -1,20 +1,11 @@
-FROM node:20-slim AS builder
+FROM node:20-slim
 RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
+ENV NODE_ENV=production
 COPY package*.json ./
 RUN npm ci
 COPY . .
 RUN npx prisma generate
 RUN npm run build
-
-FROM node:20-slim AS runtime
-RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
-WORKDIR /app
-ENV NODE_ENV=production
-COPY package*.json ./
-RUN npm ci --omit=dev
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY prisma ./prisma
 EXPOSE 3001
 CMD ["node", "dist/index.js"]
