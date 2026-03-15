@@ -7,7 +7,7 @@
 | Layer | Technology |
 |-------|-----------|
 | Backend | Node.js 20 · TypeScript · Express · Prisma · PostgreSQL |
-| Cache | In-memory (dev) / Redis (prod) |
+| Cache | In-memory (default) / Redis (opcional via `REDIS_URL`) |
 | AI | Mock adapter (dev) / OpenAI GPT-4o-mini (prod) |
 | Frontend | Next.js 14 · App Router · SSR · Tailwind CSS |
 | DevOps | Docker Compose · GitHub Actions CI/CD · Vercel (frontend) |
@@ -19,10 +19,14 @@
 - Docker & Docker Compose
 
 ### 1. Start infrastructure
-
 ```bash
+# Solo PostgreSQL (mínimo requerido)
+docker compose up postgres -d
+
+# Con Redis (opcional — activa cache persistente)
 docker compose up postgres redis -d
 ```
+> Si no levantas Redis el sistema usa cache in-memory automáticamente. Para activar Redis en producción configura `REDIS_URL` en las variables de entorno.
 
 ### 2. Backend
 
