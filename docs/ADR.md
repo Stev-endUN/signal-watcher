@@ -20,14 +20,15 @@
 
 ---
 
-## ADR-003 — In-memory cache with Redis-compatible interface
+## ADR-003 — In-memory cache con soporte opcional de Redis
 
-**Decision**: Ship an in-memory cache that implements the same interface as an ioredis client.
+**Decision**: Implementar un adaptador de cache con dos modos: in-memory (por defecto) y Redis (cuando `REDIS_URL` está configurado).
 
-**Context**: Requiring Redis as a hard dependency in development adds friction. By abstracting behind an interface, we can swap to real Redis by changing the factory in `cache.ts`.
+**Context**: Redis añade valor real en producción (persistencia entre reinicios, cache compartido entre instancias) pero introduce costos operativos. El patrón de adaptador permite escalar sin cambiar código.
 
-**Consequences**: Cache does not persist across restarts in mock mode. Set `REDIS_URL` in production.
+**Estado actual**: In-memory en producción. Para activar Redis basta con agregar `REDIS_URL` como variable de entorno.
 
+**Consequences**: Cache no persiste entre reinicios en modo in-memory. Para escalar horizontalmente se recomienda activar Redis.
 ---
 
 ## ADR-004 — AI adapter pattern with mock mode
