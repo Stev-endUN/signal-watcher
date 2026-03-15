@@ -8,15 +8,22 @@ import watchlistsRouter from './routes/watchlists.routes';
 import eventsRouter from './routes/events.routes';
 import { getMetrics } from './lib/metrics';
 import { logger } from './lib/logger';
+import { requireApiKey } from './middleware/auth.middleware';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 // ─── Security & Parsing ───────────────────────────────────────────────────────
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'],
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'x-api-key', 'x-correlation-id'],
+  credentials: true,
+}));
 app.use(express.json({ limit: '1mb' }));
-
+// ─── Authentication ───────────────────────────────────────────────────────────
+app.use('/api', requireApiKey);
 // ─── Observability ────────────────────────────────────────────────────────────
 app.use(correlationMiddleware);
 app.use(requestLogger);

@@ -58,3 +58,15 @@
 **Context**: Without correlation IDs, debugging multi-service flows is difficult. Every log line and DB record carries the ID.
 
 **Consequences**: Correlation IDs in the Event model allow tracing an event from simulation → AI enrichment → storage in a single query.
+
+---
+
+## ADR-007 — API Key expuesta en frontend
+
+**Decision**: Usar `NEXT_PUBLIC_API_KEY` para autenticar requests del frontend al backend.
+
+**Context**: Next.js expone variables `NEXT_PUBLIC_` en el browser. Esto significa que la API Key es visible en DevTools.
+
+**Consecuencias**: La key protege contra abuso casual y automatizado, pero no contra alguien determinado que inspeccione el código del browser. Para mayor seguridad se recomienda migrar a Route Handlers de Next.js (Opción B) donde la key vive solo en el servidor.
+
+**Estado actual**: Aceptado como trade-off pragmático. Revisión pendiente si el proyecto escala.
