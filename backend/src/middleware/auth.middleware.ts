@@ -2,9 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import { AppError } from './error.middleware';
 
 export function requireApiKey(req: Request, _res: Response, next: NextFunction) {
-  const validKey = process.env.API_KEY;
+  // Allow CORS preflight requests
+  if (req.method === 'OPTIONS') return next();
 
-  // Sin API_KEY configurada, permite todo (modo dev)
+  const validKey = process.env.API_KEY;
   if (!validKey) return next();
 
   const apiKey = req.headers['x-api-key'];
