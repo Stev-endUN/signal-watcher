@@ -1,5 +1,5 @@
 import { logger } from './logger';
-
+import type { Redis as RedisClient } from 'ioredis';
 interface CacheEntry {
   value: string;
   expiresAt: number | null;
@@ -44,18 +44,17 @@ class MemoryCache implements CacheAdapter {
 
 // ─── Redis Adapter ────────────────────────────────────────────────────────────
 class RedisCache implements CacheAdapter {
-  private client: import('ioredis').Redis;
+  private client: RedisClient;
 
   constructor(redisUrl: string) {
-    // Dynamic import to avoid hard dependency when Redis is not used
-    const Redis = require('ioredis');
+    const Redis = require('ioredis').default ?? require('ioredis');
     this.client = new Redis(redisUrl, {
       lazyConnect: true,
       maxRetriesPerRequest: 3,
     });
 
     this.client.on('error', (err: Error) => {
-      logger.warn('Redis connection error, falling back to memory cache', { error: err.message });
+      logger.warn('Redis connection error', { error: err.message });
     });
   }
 
