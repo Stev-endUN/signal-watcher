@@ -47,7 +47,8 @@ class RedisCache implements CacheAdapter {
   private client: RedisClient;
 
   constructor(redisUrl: string) {
-    const Redis = require('ioredis').default ?? require('ioredis');
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+const Redis = require('ioredis');
     this.client = new Redis(redisUrl, {
       lazyConnect: true,
       maxRetriesPerRequest: 3,
